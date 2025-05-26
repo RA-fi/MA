@@ -4,7 +4,7 @@ using namespace std;
 
 // Define the function whose root we want to find
 double f(double x) {
-    return x*x*x - x - 2;  // Example: f(x) = x³ - x - 2
+    return x*x - x - 2;  // Example: f(x) = x³ - x - 2
 }
 
 // False Position Method
@@ -17,7 +17,7 @@ void falsePosition(double a, double b, double tol, int maxIter) {
     double c = a; // Initial approximation
     for (int i = 1; i <= maxIter; ++i) {
         // False position formula
-        c = (a * f(b) - b * f(a)) / (f(b) - f(a));
+        c = b - (f(b) * (a - b)) / (f(a) - f(b));
 
         cout << "Iteration " << i << ": c = " << c << ", f(c) = " << f(c) << endl;
 
@@ -37,7 +37,7 @@ void falsePosition(double a, double b, double tol, int maxIter) {
 }
 
 int main() {
-    double a = 1, b = 2;           // Initial guesses
+    double a = 1, b = 3;           // Initial guesses
     double tol = 1e-6;             // Tolerance (accuracy)
     int maxIter = 100;            // Maximum number of iterations
 
