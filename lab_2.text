@@ -1,0 +1,43 @@
+-- Procedure without parameters
+CREATE OR REPLACE PROCEDURE show_all_employees IS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('--- All Employees ---');
+    FOR rec IN (SELECT emp_id, emp_name, emp_salary, emp_dept FROM employees) LOOP
+        DBMS_OUTPUT.PUT_LINE('ID: ' || rec.emp_id || 
+                             ', Name: ' || rec.emp_name || 
+                             ', Salary: ' || rec.emp_salary || 
+                             ', Dept: ' || rec.emp_dept);
+    END LOOP;
+END;
+/
+
+-- Call the procedure
+BEGIN
+    show_all_employees;
+END;
+/
+
+-- Procedure with IN parameter
+CREATE OR REPLACE PROCEDURE increment_salary (
+    p_emp_id IN employees.emp_id%TYPE,
+    p_amount IN employees.emp_salary%TYPE
+) IS
+BEGIN
+    UPDATE employees
+    SET emp_salary = emp_salary + p_amount
+    WHERE emp_id = p_emp_id;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('No employee found with ID: ' || p_emp_id);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Salary increased for employee ID: ' || p_emp_id);
+    END IF;
+END;
+/
+
+-- Call it
+BEGIN
+    increment_salary(2, 1000);
+END;
+/
+exec increment_salary(2, 1000)
