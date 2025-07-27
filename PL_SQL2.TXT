@@ -1,0 +1,405 @@
+
+
+ Retrieving Data From table using PL/SQL  
+
+  
+    There are several data type in PL/SQL.Example: 
+Number,Varchar2,date....etc.
+
+Now for retrieving data from table we have to use the
+matched data type as example for char type data in table,
+we must use char type of data and as same way
+for number type data we need number type variable etc.
+
+
+Example: We will retrieve the dname,location from dept table into 2 variable and then print them. 
+
+
+ Declare
+
+     v_deptno number(10);
+     v_dname varchar2(10);
+     v_loc varchar2(10);
+
+ Begin
+
+     v_deptno := &v_deptno;
+
+
+   Select dname,loc
+   Into v_dname,v_loc
+   From dept
+   Where deptno = v_deptno;
+
+  dbms_output.put_line('Dname is: ' || v_dname);
+  dbms_output.put_line('Location is: ' || v_loc); 
+
+ End;        
+
+
+ DML(Data Manupulating Language) in PL/SQL:
+
+   Insert 
+   Update
+   Delete    
+
+SQL> select * from student;
+
+        ID       SUB1       SUB2       SUB3
+---------- ---------- ---------- ----------
+         2         45         66         77
+         3         45         66         77
+         4         45         66         77
+         5         45         66         77
+         1         45         66         77
+
+
+ ****Insert *********************************
+
+
+       Declare 
+
+           v_Id number(10);
+           v_Sub1 number(10); 
+	   v_Sub2 number(10); 
+	   v_Sub3 number(10); 
+
+       Begin
+
+           v_Id := &v_Id; 
+           v_Sub1 := &v_Sub1;
+	   v_Sub2 := &v_Sub2;
+	   v_Sub3 := &v_Sub3;
+
+
+        Insert into student
+        values(v_Id,v_Sub1,v_Sub2,v_Sub3);
+
+    dbms_output.put_line('Data Inserted'); 
+
+
+   End; 
+
+ Example: Insert into dept table
+
+     Declare
+
+        v_deptno  number(10);
+        v_dname varchar2(10);
+        v_loc varchar2(10);
+
+     Begin
+
+        v_dept := &v_dept;  
+        v_dname := '&v_dname';
+        v_loc := '&v_loc';
+ 
+     Insert into dept
+     values(v_dept,v_dname,v_loc);
+
+      dbms_output.put_line('Data inserted');
+
+    End;
+                
+***Update**********************************
+
+
+   
+  craete table bank
+  (Acno number(10) primary key,
+   Balance number(20)
+  );
+
+
+  SQL> select * from bank;
+
+      ACNO    BALANCE
+---------- ----------
+       111       1000
+         2       5000
+       333       5700
+
+
+ Example:
+
+       Declare
+
+          v_acno number(10);
+          v_inter number(10);
+
+        Begin
+
+          v_acno  := &v_acno;
+          v_inter := &v_inter;
+
+
+         Update bank
+         Set balance = balance + v_inter
+         where ACNO = v_acno;
+
+         dbms_output.put_line('Balance Updated');
+                    
+
+       End;
+ 
+
+     example: Update for all record
+
+
+        Declare
+         
+          v_inter number(10);
+
+        Begin
+
+
+          v_inter := &v_inter;
+
+
+         Update bank
+         Set balance = balance + v_inter;
+     
+
+         dbms_output.put_line('Balance Updated');
+                    
+
+       End;
+
+******Delete*****************************         
+
+
+      
+  SQL> select * from bank;
+
+      ACNO    BALANCE
+---------- ----------
+       111       1000
+         2       5000
+       333       5700
+
+
+   Declare
+       v_acno number(10);
+
+    Begin
+
+       v_acno := &v_acno;
+
+       Delete from bank
+       where acno = v_acno;
+
+       dbms_output.put_line('Record Deleted');
+
+    End;   
+ 
+   Delete for All record:
+
+    
+ 
+
+    Begin
+
+       Delete from bank;
+       dbms_output.put_line('Record Deleted');
+
+    End;   
+
+
+-----------------
+ Conditional Control
+
+
+ 1) If...then
+ 2) If...then..else
+ 3) If....then...elseif  
+
+ 
+SQL> select * from bank;
+
+      ACNO    BALANCE
+---------- ----------
+       111       2000
+       222        333
+       333       4566
+       555       6777
+
+
+
+ 1) If...then
+
+	Declare
+       
+	 v_acno number(10);
+         v_inter number(10);
+
+        Begin
+
+         v_acno := &v_acno;
+         v_inter := &v_inter;
+
+         If v_inter < 500 then
+
+         Update bank
+         set balance = balance +  v_inter
+         where Acno = v_acno;  
+
+         end if;
+
+         End;
+
+
+
+
+Enter value for v_acno: 111
+old   8:          v_acno := &v_acno;
+new   8:          v_acno := 111;
+Enter value for v_inter: 200
+old   9:          v_inter := &v_inter;
+new   9:          v_inter := 200;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from bank;
+
+      ACNO    BALANCE
+---------- ----------
+       111       2200
+       222        333
+       333       4566
+       555       6777
+
+
+Enter value for v_acno: 111
+old   8:          v_acno := &v_acno;
+new   8:          v_acno := 111;
+Enter value for v_inter: 800
+old   9:          v_inter := &v_inter;
+new   9:          v_inter := 800;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from bank;
+
+      ACNO    BALANCE
+---------- ----------
+       111       2200
+       222        333
+       333       4566
+       555       6777
+
+
+2) If...then.......else
+
+	Declare
+       
+	 v_acno number(10);
+         v_inter number(10);
+
+        Begin
+
+         v_acno := &v_acno;
+         v_inter := &v_inter;
+
+         If v_inter < 500 then
+
+         Update bank
+         set balance = balance +  v_inter
+         where Acno = v_acno;  
+          dbms_output.put_line('Data updated'); 
+
+         else
+           
+          dbms_output.put_line('No Data updated'); 
+
+         end if;
+
+         End;
+
+
+  3) If...then..elseif
+
+
+
+
+          
+         
+            
+
+        
+         
+          
+         
+
+
+     
+
+                 
+
+
+
+    
+     
+
+        
+              
+
+
+
+
+ 
+        
+
+   
+         
+
+
+
+    
+    
+
+
+
+
+
+           
+
+
+
+
+
+
+
+      
+
+
+
+
+
+ 
+ 
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+    
+
+
+
+ 
+
+
+
+
+  

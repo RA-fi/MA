@@ -1,0 +1,301 @@
+Procedure
+
+Procedure is called a Routine  or Block in
+PL_SQL. The main difference between Procedure and
+Function is a Function returns value and Procedure
+Does not return any value.
+
+Format:
+
+Create or Replace Procedure [Procedure Name]
+Is / As
+
+Begin
+.
+.
+.
+PL/SQL Code;
+.
+.
+.
+End;
+
+
+ Type of Procedure
+
+  1) General Procedure
+  2) Procedure with Parameter  
+
+***********  1) General Procedure*********************
+
+ Example:
+
+ SQL> 
+    Create or Replace Procedure proc_1
+      IS
+        
+       v_deptno number(10);
+       v_name varchar2(10);
+       v_Loc varchar2(10);
+    
+      Begin
+    
+         Select Deptno,Dname,Loc
+         Into v_deptno,v_name,v_Loc
+         From dept
+         Where Deptno = 10;
+  
+        dbms_output.put_Line('Deptno :' || v_Deptno); 
+        dbms_output.put_Line('Dname  :' || V_name); 
+        dbms_output.put_Line('Loc    :' || v_Loc);  
+   
+   
+     End;   
+       
+ 
+Procedure created.
+
+SQL> exec proc_1;
+Deptno :10
+Dname  :ACCOUNTING
+Loc    :NEW YORK
+
+ Multiple DML Operation can be possible in Procedure
+
+ Example:
+
+
+ Create or Replace Procedure proc_test
+ is
+   
+ Begin
+
+  Update Dept 
+  Set Dname = 'aaaa';
+  
+  Update Str
+  Set Balance  = Balance + 500;
+
+
+   dbms_output.put_Line('Update Successfully'); 
+
+ End;
+
+
+ 
+SQL> exec proc_test;
+Update Successfully
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 aaaa           NEW YORK
+        20 aaaa           DALLAS
+        30 aaaa           CHICAGO
+        40 aaaa           BOSTON
+
+SQL> select * from str;
+
+        ID NAME          BALANCE
+---------- ---------- ----------
+       111 Mahfuz           2500
+       222 Reja             2800
+       333 Rashed           2500 
+
+
+***************2) Procedure with Parameter ***********
+
+
+ Parameter : Parameter is like Reference variable
+  or Reusable Run Time variable.
+
+
+ Parameter in Procedure
+
+ Syntax:
+
+  Create Or Replace Procedure [Name]
+   (Parameter List......)
+  Is / AS
+  Begin
+        '
+        '
+        '
+     Pl/SQL Code;
+        '
+        '
+        '
+  End;
+
+
+ Example:
+
+
+ Note: There is no need to define the length of 
+ parameter variable in procedure.
+
+ Create Or Replace Procedure para_Proc
+ (v_id number)
+ Is 
+
+  v_name varchar2(10);
+  v_balance number(10);
+
+ Begin
+
+  Select Name,Balance
+  Into v_name,v_balance 
+  From Str
+  where Id = v_id;
+
+ 
+   dbms_output.put_line('Name:' || v_Name);
+   dbms_output.put_line('Balance:' || v_Balance);
+
+
+ End para_Proc;
+
+     
+ 
+PL/SQL procedure successfully completed.
+                               0                                                     
+SQL> exec para_proc(222);
+Name:Reja
+Balance:2800
+
+
+
+Parameter can be 2 types
+
+ 1) 'IN' mode Parameter
+ 2) 'Out' mode parameter
+
+
+ 1) 'IN' mode Parameter
+   
+     This type is used for inputing 
+  value in procedure.
+   
+  2) 'Out' mode parameter
+
+     This type is used for Outputing
+  value From procedure.
+
+
+  Example
+
+     
+create or replace Procedure query_dept
+(v_deptno In number,v_dname OUT varchar2,v_loc  Out varchar2)
+IS
+Begin
+
+ Select Dname,Loc
+ Into v_dname,v_loc
+ From Dept
+ Where deptno = v_deptno;   
+
+
+End query_dept; 
+
+---------------------------------------------
+SQL> create or replace Procedure query_dept
+  2  (v_deptno In number,v_dname OUT varchar2,v_loc  Out varchar2)
+  3  IS
+  4  Begin
+  5  
+  6   Select Dname,Loc
+  7   Into v_dname,v_loc
+  8   From Dept
+  9   Where deptno = v_deptno;   
+ 10  
+ 11  
+ 12  End query_dept; 
+ 13  
+ 14  /
+
+Procedure created.
+
+SQL> variable g_dname varchar2(10);
+SQL> variable g_loc varchar2(10);
+SQL> 
+SQL> exec query_dept(10,:g_name,:g_loc);
+SP2-0552: Bind variable "G_NAME" not declared.
+SQL> 
+SQL> 
+SQL> exec query_dept(10,:g_dname,:g_loc);
+
+PL/SQL procedure successfully completed.
+
+SQL> print g_dname;
+
+G_DNAME
+--------------------------------
+aaaa
+
+SQL> print g_loc;
+
+G_LOC
+--------------------------------
+NEW YORK
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1*  exec query_dept(20,:g_name,:g_loc);
+  2  /
+SP2-0552: Bind variable "G_NAME" not declared.
+SQL> ed
+Wrote file afiedt.buf
+
+  1*  exec query_dept(20,:g_dname,:g_loc);
+  2  /
+ exec query_dept(20,:g_dname,:g_loc);
+ *
+ERROR at line 1:
+ORA-00900: invalid SQL statement
+
+
+SQL> exec query_dept(20,:g_dname,:g_loc);
+
+PL/SQL procedure successfully completed.
+
+SQL> print g_loc;
+
+G_LOC
+--------------------------------
+DALLAS
+
+SQL> 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+ 
+
+   
+
+
+
+
+ 
+
+
+

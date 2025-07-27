@@ -1,0 +1,159 @@
+
+
+ Exception Handeling
+
+
+ Exception handling is a method by which it
+holds  all the error during running the program.
+
+We know basic PL/SQL format is like:
+
+ Declare
+
+
+ Begin
+
+
+ Exception
+
+
+ End;
+
+ 
+Example:
+
+  Declare
+
+    v_deptno number(10);
+    v_dname varchar2(10);
+ 
+    
+
+ Begin
+
+   v_deptno := &v_deptno;
+
+
+   Select dname
+   into v_dname
+   From dept
+   Where deptno = v_deptno;
+
+  dbms_output.put_Line(v_dname);
+
+
+
+ Exception
+
+  When No_Data_Found Then
+  dbms_output.put_Line('No Such Deptname Found');
+ 
+ End;
+  
+
+Enter value for v_deptno: 10
+dhaka
+
+PL/SQL procedure successfully completed.
+
+SQL> /
+Enter value for v_deptno: 99
+No Such Deptname Found
+
+PL/SQL procedure successfully completed.
+
+   
+
+ Declare
+
+  v_ename varchar2(10);
+
+ Begin
+
+  Select ename 
+  Into v_ename 
+  from emp;
+
+
+ Exception
+
+  when Too_many_Rows then
+   dbms_output.put_line('Too many rows in a variable');
+  
+ End;
+
+Too many rows in a variable
+
+
+ another..................
+
+
+ Declare
+
+  v_ename varchar2(10);
+
+ Begin
+
+  Select ename 
+  Into v_ename 
+  from emp
+  Where empno = 7839 ;
+
+ Exception
+
+  when Too_many_Rows then
+   dbms_output.put_line('Too many rows in a variable');
+  
+ End;
+
+
+ User Defined Exception
+
+  Range To be declare For Error : 
+       -20000 to -20999
+
+ Example:
+
+  Declare
+
+    v_deptno number(10);
+    v_dname varchar2(20);
+
+ Begin
+
+    v_deptno := &v_deptno;
+
+  Select dname
+  into v_dname
+  From dept
+  where deptno = v_deptno;
+
+
+ dbms_output.Put_line(v_dname);
+
+ Exception
+  
+   When No_data_Found then
+
+    raise_application_error(-20210,'No Dname Found');
+End;
+  
+
+  
+
+
+
+
+
+
+
+
+ 
+  
+
+ 
+
+
+
+ 
+    

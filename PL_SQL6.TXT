@@ -1,0 +1,240 @@
+Package:
+ 
+# Package is like a Folder.
+
+#Oracle package can hold various object 
+like Procedure,Function etc.
+
+#By building package it will be more 
+flexible to access database operation
+by different users.
+
+#The most important issue in Package
+is that it supports overloading
+
+ Parts of a package:
+ There is 2 part of a package
+   1) Package Specification
+   2) Package Body
+
+ 
+ 1)Package Specification Structure
+
+ Create or Replace Package [Package_Name]
+ is
+    Declaration of Subprogram
+ End [Package_Name];   
+
+ 2) Package Body
+
+ Create or Replace Package Body[Package_Name]
+ is
+      
+   Detail operation of subprogram;
+
+ End [Package_Name];   
+
+
+ Note: Packge name must be same in
+       package specification and Body
+
+
+ Example:
+ 
+ // making package Specification
+
+ create or Replace Package test
+ is
+
+  procedure abc(a number,b number);
+
+ End test;
+  
+ // making package body
+
+
+ create or Replace Package Body test 
+ is
+
+    procedure abc(a number,b number)
+    is
+      c number(10);
+ 
+    Begin
+        
+       c := a+b;
+       dbms_output.Put_Line('Total is:' || c);
+  
+    End;        
+
+ 
+ End test;   
+
+
+
+ Run a package's Routiune
+
+  Format: Exec Packagename.subroutine;
+
+
+ SQL> Exec test.abc(10,20);
+ Total is:30
+
+
+ Change...........
+
+
+
+ create or Replace Package test
+ is
+
+  procedure abc(a number,b number);
+  procedure getname(n varchar2);
+
+ End test;
+
+
+ create or Replace Package Body test 
+ is
+
+    procedure abc(a number,b number)
+    is
+      c number(10);
+ 
+    Begin
+        
+       c := a+b;
+       dbms_output.Put_Line('Total is:' || c);
+  
+    End;        
+
+    
+    procedure getname(n varchar2)
+    is
+    Begin
+
+     dbms_output.put_line('Your name ' || n);
+
+    End;  
+
+
+ End test;   
+
+
+SQL> exec test.abc(10,90);
+Total is:100
+
+
+SQL> exec test.getname('mahfuz');
+Your name mahfuz
+
+
+ Package Supports Overloading  
+
+   
+
+ Example:
+
+
+ create or replace Package pack_dept
+ is
+
+ procedure add_dept(v_deptno number,v_dname varchar2,v_loc varchar2);
+ procedure add_dept(v_deptno number,v_dname varchar2);
+ procedure add_dept(v_deptno number);
+
+ End pack_dept;
+
+ 
+//Body
+
+
+ create or replace Package body pack_dept
+ is
+
+	 procedure add_dept(v_deptno number,v_dname varchar2,v_loc varchar2)
+         is
+         Begin
+
+           insert into Dept(deptno,dname,loc)
+           values(v_deptno,v_dname,v_loc);   
+         End;
+            
+
+	 procedure add_dept(v_deptno number,v_dname varchar2)
+         is
+         Begin
+
+           insert into Dept(deptno,dname)
+           values(v_deptno,v_dname);   
+         End; 
+
+
+	 procedure add_dept(v_deptno number)
+         is
+         Begin
+
+           insert into Dept(deptno)
+           values(v_deptno);   
+         End;
+
+ End pack_dept;
+
+
+ 
+SQL> exec pack_dept.add_dept(66,'Ad','dhaka');
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 dhaka          NEW YORK
+        20 aaaa           DALLAS
+        30 aaaa           CHICAGO
+        40 aaaa           BOSTON
+        66 Ad             dhaka
+
+SQL>  exec pack_dept.add_dept(67,'sss');
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 dhaka          NEW YORK
+        20 aaaa           DALLAS
+        30 aaaa           CHICAGO
+        40 aaaa           BOSTON
+        66 Ad             dhaka
+        67 sss
+
+6 rows selected.
+
+SQL> exec pack_dept.add_dept(68);
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 dhaka          NEW YORK
+        20 aaaa           DALLAS
+        30 aaaa           CHICAGO
+        40 aaaa           BOSTON
+        66 Ad             dhaka
+        67 sss
+        68
+
+7 rows selected.
+ 
+
+
+
+
+
+     
+  

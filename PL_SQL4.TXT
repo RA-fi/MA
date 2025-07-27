@@ -1,0 +1,188 @@
+
+ Function
+
+ Function is also called as Routine or Block 
+for selecting or returning value from database
+object like table.
+
+ Some rules for function:
+
+  # It returns value
+  # It is as procedure but procedure does not
+  # Function must be single row function.
+    That means it supports single row function.
+    Group functions are not supported  on function.
+  # Data type or variable will be use as SQL
+    type that means Char, Date, Number.
+    It does not support PL/SQL type of data
+    like Boolean, Record, Table.
+  # Most important thing is DML. That means Insert,
+    Update, Delete are not supported in function.
+    Only select is supported by Function.
+
+  Syntax:
+ 
+   Create or Replace Function [Function_Name]
+    Return [Data type] 
+   IS / AS
+   Begin
+ 
+    
+   End [Function_Name]; 
+
+
+ Non-database Function
+   
+
+  Create Or Replace Function Func_Test
+   (v_num number)
+   return number
+    is
+   v_new_num number(10);
+   Begin
+
+     v_new_num := v_num + 100;      
+               
+    Return v_new_num;
+ 
+   End Func_Test;
+
+
+SQL> Variable n number
+SQL> exec :n := func_test(50)
+
+PL/SQL procedure successfully completed.
+
+SQL> print n
+
+         N
+----------
+       150
+
+***********************************
+select * from user_objects;
+Select * from user_objects where Object_Type = 'PROCEDURE'
+Select * from user_objects where Object_Type = 'TABLE'
+***********************************
+    
+ 
+
+Database Function
+
+ Example on Dept Table
+
+
+ Create or Replace Function get_Dname
+  (v_id number)
+ Return varchar2
+ is
+  v_dname varchar2(10);    
+
+  Begin  
+
+     Select Dname 
+     Into v_dname
+     From Dept
+     Where Deptno = v_id;
+
+  Return v_dname;
+
+ End get_Dname;      
+
+
+SQL> variable dpt varchar2(10)
+SQL> exec :dpt := get_dname(10)
+
+PL/SQL procedure successfully completed.
+
+SQL> print dpt
+
+DPT
+--------------------------------
+dhaka
+
+SQL> 
+
+
+
+ An another Usefull Function
+
+ Example on emp table:
+
+     Select specific records from Emp table and 
+ determine tax value of all Employee salary
+
+ 
+  Create or Replace Function tax
+   (v_value number)
+   Return number
+  is
+   Begin
+    
+     Return (v_value * 0.08);
+    End tax;
+
+SQL> Select empno,ename,sal,tax(sal) from emp;
+
+     EMPNO ENAME             SAL   TAX(SAL)
+---------- ---------- ---------- ----------
+      7369 SMITH             800         64
+      7499 ALLEN            1600        128
+      7521 WARD             1250        100
+      7566 JONES            2975        238
+      7654 MARTIN           1250        100
+      7698 BLAKE            2850        228
+      7782 CLARK            2450        196
+      7788 SCOTT            3000        240
+      7839 KING             5000        400
+      7844 TURNER           1500        120
+      7876 ADAMS            1100         88
+
+     EMPNO ENAME             SAL   TAX(SAL)
+---------- ---------- ---------- ----------
+      7900 JAMES             950         76
+      7902 FORD             3000        240
+      7934 MILLER           1300        104
+
+14 rows selected.
+
+
+
+
+
+another copy of Tax 
+
+Create or Replace Function tax
+   (v_value number,tax_val number)
+   Return number
+  is
+   Begin
+    
+     Return (v_value * tax_val);
+    End tax;
+
+
+select empno,ename,sal,tax(sal,0.05) from emp;
+
+
+     EMPNO ENAME             SAL TAX(SAL,0.05)
+---------- ---------- ---------- -------------
+      7369 SMITH             800            40
+      7499 ALLEN            1600            80
+      7521 WARD             1250          62.5
+      7566 JONES            2975        148.75
+      7654 MARTIN           1250          62.5
+      7698 BLAKE            2850         142.5
+      7782 CLARK            2450         122.5
+      7788 SCOTT            3000           150
+      7839 KING             5000           250
+      7844 TURNER           1500            75
+      7876 ADAMS            1100            55
+
+     EMPNO ENAME             SAL TAX(SAL,0.05)
+---------- ---------- ---------- -------------
+      7900 JAMES             950          47.5
+      7902 FORD             3000           150
+      7934 MILLER           1300            65
+
+    

@@ -1,0 +1,78 @@
+ 
+
+  PL/SQL :
+
+     PL/SQL is the Procedural Language of Oracle.
+
+ It follows the style of blocking in coding.
+
+ 
+ Advantage:
+ 
+   It can execute more than one or two DML and other
+   instructions;
+
+ 
+  Format:
+
+       Declare
+        
+          [declaration of vairables]
+ 
+       Begin
+          [Main instruction]
+         
+       Exception
+          [Handle any error message] 
+
+       End; [End of Programe]
+
+ To print any message or value in PL/SQL 
+ SQL> Set serveroutput On 
+
+ SQL> 
+        Declare
+           a number(10);
+           b number(10);
+           c number(10);
+         Begin
+         
+           a := 10;
+           b := 20;
+            
+           c := a+b;
+           
+           dbms_output.put_line('Total'); 
+           dbms_output.put_line(c);
+
+          End; 
+
+
+SQL>
+         Declare
+           a number(10);
+           b number(10);
+           c number(10);
+         Begin
+         
+           a := 10;
+           b := 20;
+            
+           c := a+b;
+           
+          dbms_output.put_line('Total' || c); 
+          
+
+          End; 
+
+
+
+ 
+
+             
+           
+
+   
+
+
+               
